@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 // Instância do Axios
 import api from "../../apis/index";
 
 function SignupForm() {
+  const history = useHistory()
   // 1. Onde vamos guardar as informações do form
   const [state, setState] = useState({ email: "", name: "", password: "" });
 
@@ -22,6 +24,7 @@ function SignupForm() {
       const response = await api.post("/signup", state);
 
       console.log(response);
+      history.push('/login')
     } catch (err) {
       console.error(err);
     }

@@ -11,6 +11,7 @@ import ProjectCreate from "../routeComponents/projects/ProjectCreate";
 import ProjectList from "../routeComponents/projects/ProjectList";
 import ProjectDetail from "../routeComponents/projects/ProjectDetail";
 import ProjectEdit from "../routeComponents/projects/ProjectEdit";
+import Navbar from "./Navbar";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState({});
@@ -25,7 +26,8 @@ function App() {
 
   return (
     <div className="container mt-5">
-      <BrowserRouter forceRefresh={true}>
+      <BrowserRouter >
+      <Navbar user={loggedInUser}/>
         {loggedInUser._id ? (
           <Switch>
             <PrivateRoute
@@ -33,7 +35,10 @@ function App() {
               component={Profile}
               user={loggedInUser}
             />
-            <Route exact path="/project/all" component={ProjectList} />
+            <Route exact path="/project/all" component={ProjectList} user={loggedInUser} />
+            <Route exact path="/project/new" component={ProjectCreate} user={loggedInUser} />
+            <Route path="/project/edit/:id" component={ProjectEdit} user={loggedInUser} />
+            <Route path="/project/:id" component={ProjectDetail} user={loggedInUser} />
             <Route>
               <Redirect to="/profile" />
             </Route>
@@ -47,10 +52,9 @@ function App() {
                 return <Login setLoggedInUser={setLoggedInUser} {...props} />;
               }}
             />
-            <Route exact path="/project/all" component={ProjectList} />
-            <Route exact path="/project/new" component={ProjectCreate} />
-            <Route path="/project/edit/:id" component={ProjectEdit} />
-            <Route path="/project/:id" component={ProjectDetail} />
+            <Route>
+              <Redirect to="/login" />
+            </Route>
           </Switch>
         )}
       </BrowserRouter>
